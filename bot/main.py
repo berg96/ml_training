@@ -46,6 +46,14 @@ async def take_topics(message: str) -> list[str]:
 
 
 async def ask_llama(topics: list[str], prompt: str) -> str:
+    prompt = """
+    Ты — умный помощник в Telegram. Твои ответы должны быть:
+    1️⃣ Короткими (не более 3 предложений).
+    2️⃣ Дружелюбными и простыми.
+    3️⃣ Четкими и без сложных терминов.
+
+    Вопрос: {user_message}
+    """
     response = chat(
         model='llama3.2',
         messages=[
@@ -53,6 +61,10 @@ async def ask_llama(topics: list[str], prompt: str) -> str:
                 'role': 'user',
                 'content': f'Ты эксперт в {", ".join(topics)[:-2]}. {prompt}',
             },
+            # {
+            #     'role': 'user',
+            #     'content': prompt.format(user_prompt)
+            # }
     ])
     return response['message']['content']
 
